@@ -7,6 +7,7 @@ const normalize = require('normalize-url');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const bcrypt = require('bcryptjs');
+const respondWithJwtForUser = require('./jwt')
 
 // @route POST api/users
 // @desc Register user
@@ -30,7 +31,7 @@ router.post('/',
 
       let user = await User.findOne({email});
       if (user) {
-        return res.status(4000).json({
+        return res.status(400).json({
           errors: [{msg: 'User already exists'}]
         });
       }
@@ -46,16 +47,7 @@ router.post('/',
       user = new User({name, email, avatar, password})
       await user.save();
 
-      const payload = {user: {id: user.id}};
-
-      jwt.sign(
-        payload,
-        config.get('jwtSecret'),
-        {expiresIn: '5 days'},
-        (err, token) => {
-          if (err) throw err;
-          res.json({token})
-        });
+      respondWithJwtForUser(res, user);
 
     } catch (err) {
       console.error(err.message);
