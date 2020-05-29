@@ -5,7 +5,8 @@ import {
   USER_LOADED,
   AUTH_ERROR,
   LOGIN_FAILED,
-  LOGIN_SUCCESS
+  LOGIN_SUCCESS,
+  LOGOUT
 } from './types';
 import {setAlert} from './alert';
 import setAuthToken from '../utils/setAuthToken';
@@ -60,4 +61,9 @@ export const register = ({name, email, password}) => async dispatch => {
 
     dispatch({type: REGISTER_FAIL})
   }
+}
+
+export const logout = () => async dispatch => {
+
+  dispatch({type: LOGOUT})
 }
