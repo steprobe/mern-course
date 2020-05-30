@@ -10,8 +10,8 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "format": "prettier --write '**/*.js'",
-    "lint": "eslint client/src/**/*.js server/**/*.js",
-    "lintf": "eslint --fix client/src/**/*.js server/**/*.js"
+    "lint": "eslint server/**/*.js & npm run lint --prefix client",
+    "lintf": "eslint --fix server/**/*.js & npm run lintf --prefix client"
   },
   "author": "",
   "license": "ISC",
@@ -31,6 +31,7 @@
     "concurrently": "^5.2.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.1.0",
+    "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-flowtype": "^5.1.3",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
