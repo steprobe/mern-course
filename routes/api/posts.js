@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {check, validationResult} = require('express-validator');
+const { check, validationResult } = require('express-validator');
 const auth = require('../../middleware/auth');
 
 const Post = require('../../models/Post');
@@ -10,14 +10,13 @@ const checkObjectId = require('../../middleware/checkObjectId');
 // @route    POST api/posts
 // @desc     Create a post
 // @access   Private
-router.post('/', [auth, [
-    check('text', 'Text is required').not().isEmpty()]
-  ],
+router.post(
+  '/',
+  [auth, [check('text', 'Text is required').not().isEmpty()]],
   async (req, res) => {
-
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({errors: errors.array()});
+      return res.status(400).json({ errors: errors.array() });
     }
 
     try {
@@ -45,7 +44,7 @@ router.post('/', [auth, [
 // @access   Private
 router.get('/', auth, async (req, res) => {
   try {
-    const posts = await Post.find().sort({date: -1});
+    const posts = await Post.find().sort({ date: -1 });
     res.json(posts);
   } catch (err) {
     console.error(err.message);
@@ -77,12 +76,12 @@ router.delete('/:id', [auth, checkObjectId('id')], async (req, res) => {
 
     // Check user
     if (post.user.toString() !== req.user.id) {
-      return res.status(401).json({msg: 'User not authorized'});
+      return res.status(401).json({ msg: 'User not authorized' });
     }
 
     await post.remove();
 
-    res.json({msg: 'Post removed'});
+    res.json({ msg: 'Post removed' });
   } catch (err) {
     console.error(err.message);
 
@@ -99,10 +98,10 @@ router.put('/like/:id', [auth, checkObjectId('id')], async (req, res) => {
 
     // Check if the post has already been liked
     if (post.likes.some((like) => like.user.toString() === req.user.id)) {
-      return res.status(400).json({msg: 'Post already liked'});
+      return res.status(400).json({ msg: 'Post already liked' });
     }
 
-    post.likes.unshift({user: req.user.id});
+    post.likes.unshift({ user: req.user.id });
 
     await post.save();
 
@@ -122,12 +121,12 @@ router.put('/unlike/:id', [auth, checkObjectId('id')], async (req, res) => {
 
     // Check if the post has not yet been liked
     if (!post.likes.some((like) => like.user.toString() === req.user.id)) {
-      return res.status(400).json({msg: 'Post has not yet been liked'});
+      return res.status(400).json({ msg: 'Post has not yet been liked' });
     }
 
     // remove the like
     post.likes = post.likes.filter(
-      ({user}) => user.toString() !== req.user.id
+      ({ user }) => user.toString() !== req.user.id
     );
 
     await post.save();
@@ -152,7 +151,7 @@ router.post(
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({errors: errors.array()});
+      return res.status(400).json({ errors: errors.array() });
     }
 
     try {
@@ -191,15 +190,15 @@ router.delete('/comment/:id/:comment_id', auth, async (req, res) => {
     );
     // Make sure comment exists
     if (!comment) {
-      return res.status(404).json({msg: 'Comment does not exist'});
+      return res.status(404).json({ msg: 'Comment does not exist' });
     }
     // Check user
     if (comment.user.toString() !== req.user.id) {
-      return res.status(401).json({msg: 'User not authorized'});
+      return res.status(401).json({ msg: 'User not authorized' });
     }
 
     post.comments = post.comments.filter(
-      ({id}) => id !== req.params.comment_id
+      ({ id }) => id !== req.params.comment_id
     );
 
     await post.save();

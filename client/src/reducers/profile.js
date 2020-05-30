@@ -3,14 +3,9 @@ const initialState = {
   profiles: [],
   repos: [],
   loading: true,
-  error: {},
+  error: {}
 };
 
 export default function (state = initialState, action) {
   const { type, payload } = action;
-
-  switch (type) {
-    case
-
-  }
 }
