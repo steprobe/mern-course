@@ -5,5 +5,5 @@ import profile from './auth';
 
 export default combineReducers({
   alert,
-  auth
+  auth,
 });

@@ -6,7 +6,7 @@ import {
   AUTH_ERROR,
   LOGIN_FAILED,
   LOGIN_SUCCESS,
-  LOGOUT
+  LOGOUT,
 } from './types';
 import { setAlert } from './alert';
 import setAuthToken from '../utils/setAuthToken';
@@ -50,7 +50,7 @@ export const register = ({ name, email, password }) => async (dispatch) => {
     dispatch({ type: REGISTER_SUCCESS, payload: res.data });
     dispatch(loadUser());
   } catch (err) {
-    const errors = err.response.data.errors;
+    const { errors } = err.response.data;
     if (errors) {
       errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
     }
